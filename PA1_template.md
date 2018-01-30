@@ -10,15 +10,12 @@ dplyr
 tidyr
 stringr
 
-```{r include=FALSE}
-library(dplyr)
-library(tidyr)
-library(stringr)
-```
+
 
 
 ## Loading and preprocessing the data
-```{r}
+
+```r
 ## Code for reading in the dataset and/or processing the data
 setwd("F:/Coursera/R/RepData_PeerAssessment1-master/RepData_PeerAssessment1")
 myfile <- read.csv(unz("activity.zip", "activity.csv"))
@@ -42,23 +39,37 @@ dfaa <-
                 xlab = "Steps Number",
                 breaks = 10
         )
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
 
 
 ## What is mean total number of steps taken per day?
-```{r}
+
+```r
 mean_steps_by_day <- mean(sum$steps)
 median_steps_by_day <- median(sum$steps)
 mean_steps_by_day
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median_steps_by_day
+```
+
+```
+## [1] 10765
 ```
 
 
 
 ## What is the average daily activity pattern?
-```{r}
+
+```r
 mean_act_ptt <- activy_df %>% select(interval, steps)  %>%
         group_by(interval) %>%
         summarise_each(funs(mean))
@@ -72,10 +83,13 @@ time_serie <-
         )
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
 
 
 ## Imputing missing values
-```{r}
+
+```r
 na_vector <- which(is.na(myfile$steps))
 for (i in 1:length(na_vector)) {
  myfile[na_vector[i],]$steps <-
@@ -96,11 +110,14 @@ hist_no_na <-
         )
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 ## Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 df_wk <-myfile[lubridate::wday(myfile$date) %in% c(1, 7),]
 wk_act_ptt <- df_wk %>% select(interval, steps)  %>%
@@ -116,4 +133,6 @@ op <- par(mfcol = c(2,1), mar = c(2,4,2,2))
 plot(wk_act_ptt$interval, wk_act_ptt$steps, type = "l", xlab = "", ylab = "Weekend Pattern", col = "blue")
 plot(no_wk_act_ptt$interval, no_wk_act_ptt$steps, type = "l", xlab = "", ylab = "No Weekend Pattern",col = "red")
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
